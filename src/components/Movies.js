@@ -32,8 +32,9 @@ class Movies extends Component {
         });
     }
 
-    handlePageChange() {
-        console.log('on page change ');
+    handlePageChange = (page) => {
+        console.log('on page change ', page);
+        this.setState({currentPage : page});
     }
 
     render() {
