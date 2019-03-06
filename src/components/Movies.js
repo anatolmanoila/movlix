@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMoviesService';
 import Like from './common/Like';
 import Pagination from './common/Pagination';
+import { paginate } from '../utils/paginate';
 
 class Movies extends Component {
 
@@ -36,14 +37,17 @@ class Movies extends Component {
     }
 
     render() {
-        const { length } = this.state.movies;
-        const { pageSize, currentPage } = this.state;
 
-        if (length === 0) return <p className="text-warning">There are no movies in the db</p>;
+        const { pageSize, currentPage, movies } = this.state;
+
+        if (movies.length === 0) return <p className="text-warning">There are no movies in the db</p>;
+
+        const paginatedMovies = paginate(movies, currentPage, pageSize);
+        //console.log(paginatedMovies);
 
         return (
             <React.Fragment>
-            <p> There are {length} movies in the DB.</p>
+            <p> There are {movies.length} movies in the DB.</p>
             <div>
                 <table className="table">
                     <thead>
@@ -59,7 +63,7 @@ class Movies extends Component {
                     </thead>
                     <tbody>
 
-                     { this.state.movies.map( movie => (
+                     { paginatedMovies.map( movie => (
                         <tr key={movie._id}>
                             <td>{ movie.title }</td>
                             <td>{ movie.genre.name }</td>
@@ -75,11 +79,10 @@ class Movies extends Component {
                             </td>
                         </tr>
                      ))}
-
                     </tbody>
                 </table>
             </div>
-            <Pagination itemsCount={ length }
+            <Pagination itemsCount={ movies.length }
                         pageSize={ pageSize }
                         currentPage={ currentPage }
                         onPageChange={ this.handlePageChange }
