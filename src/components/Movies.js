@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMoviesService';
 import Like from './common/Like';
 import Pagination from './common/Pagination';
+import Searchbar from './common/Searchbar';
 import { paginate } from '../utils/paginate';
 
 class Movies extends Component {
@@ -9,7 +10,8 @@ class Movies extends Component {
     state = {
         movies: getMovies(),
         pageSize: 4,
-        currentPage: 1
+        currentPage: 1,
+        inputTerm: '',
     };
 
 
@@ -33,7 +35,7 @@ class Movies extends Component {
     }
 
     handlePageChange = (page) => {
-        console.log('on page change ', page);
+        //console.log('on page change ', page);
         this.setState({currentPage : page});
     }
 
@@ -49,6 +51,9 @@ class Movies extends Component {
         return (
             <React.Fragment>
             <p> There are {movies.length} movies in the DB.</p>
+            <Searchbar term={this.state.inputTerm}
+                        onSearchEnter={2}
+            />
             <div>
                 <table className="table">
                     <thead>
@@ -83,6 +88,18 @@ class Movies extends Component {
                     </tbody>
                 </table>
             </div>
+            <Pagination itemsCount={ movies.length }
+                        pageSize={ pageSize }
+                        currentPage={ currentPage }
+                        onPageChange={ this.handlePageChange }
+            />
+            <Pagination itemsCount={ movies.length }
+                        pageSize={ pageSize }
+                        currentPage={ currentPage }
+                        onPageChange={ this.handlePageChange }
+            />
+            { console.log(<Pagination />)}
+
             <Pagination itemsCount={ movies.length }
                         pageSize={ pageSize }
                         currentPage={ currentPage }
